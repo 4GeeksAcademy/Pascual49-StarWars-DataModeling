@@ -1,4 +1,4 @@
-mport os
+import os
 import sys
 from sqlalchemy import Column, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import relationship, declarative_base
@@ -33,6 +33,22 @@ class Starship(Base):
     model = Column (String(250), nullable=False)
     manufacturer = Column (String(250), nullable=False)
     cargo_capacity = Column (Integer, nullable=False)
+class Favorites_usercharacter(Base):
+    __tablename__ = 'Favorites_usercharacter'
+    id = Column (Integer, primary_key=True)
+    user_id = Column (String(250), nullable=False)
+    character_id = Column (String(250), nullable=False)
+class Favorites_userPlanet(Base):
+    __tablename__ = 'Favorites_userPlanet'
+    id = Column (Integer, primary_key=True)
+    user_id = Column (String(250), nullable=False)
+    planet_id = Column (String(250), nullable=False)
+class Favorites_userStarship(Base):
+    __tablename__ = 'Favorites_userStarship'
+    id = Column (Integer, primary_key=True)
+    user_id = Column (String(250), nullable=False)
+    starship_id = Column (String(250), nullable=False)
+
 # class Address(Base):
 #     __tablename__ = 'address'
 #     # Here we define columns for the table address.
