@@ -1,65 +1,80 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Float
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
-Base = declarative_base()
-# class Person(Base):
-#     __tablename__ = 'person'
-#     # Here we define columns for the table person
-#     # Notice that each column is also a normal Python instance attribute.
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String(250), nullable=False)
-class Person (Base):
-    __tablename__ = 'Person'
-    id = Column (Integer, primary_key=True)
-    name =  Column (String(250), nullable=False)
-    height = Column(Float , nullable=False)
-    mass = Column (Float , nullable=False)
-    hair_color = Column (String(250) , nullable=False)
-    skin_color = Column (String(250) , nullable=False)
-class Planet(Base):
-    __tablename__ = 'Planet'
-    id = Column (Integer, primary_key=True)
-    name =  Column (String(250), nullable=False)
-    population = Column(Integer , nullable=False)
-    terrain = Column (String(250), nullable=False)
-    climate = Column (String(250), nullable=False)
-class Starship(Base):
-    __tablename__ = 'Starship'
-    id = Column (Integer, primary_key=True)
-    name =  Column (String(250), nullable=False)
-    model = Column (String(250), nullable=False)
-    manufacturer = Column (String(250), nullable=False)
-    cargo_capacity = Column (Integer, nullable=False)
-class Favorites_usercharacter(Base):
-    __tablename__ = 'Favorites_usercharacter'
-    id = Column (Integer, primary_key=True)
-    user_id = Column (String(250), nullable=False)
-    character_id = Column (String(250), nullable=False)
-class Favorites_userPlanet(Base):
-    __tablename__ = 'Favorites_userPlanet'
-    id = Column (Integer, primary_key=True)
-    user_id = Column (String(250), nullable=False)
-    planet_id = Column (String(250), nullable=False)
-class Favorites_userStarship(Base):
-    __tablename__ = 'Favorites_userStarship'
-    id = Column (Integer, primary_key=True)
-    user_id = Column (String(250), nullable=False)
-    starship_id = Column (String(250), nullable=False)
 
-# class Address(Base):
-#     __tablename__ = 'address'
-#     # Here we define columns for the table address.
-#     # Notice that each column is also a normal Python instance attribute.
-#     id = Column(Integer, primary_key=True)
-#     street_name = Column(String(250))
-#     street_number = Column(String(250))
-#     post_code = Column(String(250), nullable=False)
-#     person_id = Column(Integer, ForeignKey('person.id'))
-#     person = relationship(Person)
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'user'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), unique=True, nullable=False)
+    password = Column(String(250), nullable=False)
+
+class Character(Base):
+    __tablename__ = 'character'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    hair_color = Column(String(250), nullable=False)
+    eye_color = Column(String(250), nullable=False)
+
+class Planet(Base):
+    __tablename__ = 'planet'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    population = Column(String(250), nullable=False)
+    terrain = Column(String(250), nullable=False)
+
+class Vehicle(Base):
+    __tablename__ = 'vehicle'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    crew = Column(String(250), nullable=False)
+    type = Column(String(250), nullable=False)
+
+class Favorite_Characters(Base):
+    __tablename__ = 'favorite_characters'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    character_id = Column(Integer, ForeignKey('character.id'), nullable=True)
+    character = relationship(Character)
+
+class Favorite_Planets(Base):
+    __tablename__ = 'favorite_planets'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    planet_id = Column(Integer, ForeignKey('planet.id'), nullable=True)
+    planet = relationship(Planet)
+
+class Favorite_Vehicles(Base):
+    __tablename__ = 'favorite_vehicles'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    vehicle_id = Column(Integer, ForeignKey('vehicle.id'), nullable=True)
+    vehicle = relationship(Vehicle)
+
     def to_dict(self):
         return {}
+
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
